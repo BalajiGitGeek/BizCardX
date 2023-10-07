@@ -68,36 +68,39 @@ if selected == 'STORING DATA':
                             st.success('SUCCESSFULLY UPLOADED', icon="✅")
 
 if selected == 'MODIFYING DATA':
-    selected_name = st.selectbox("select the name to delete/modify",sql.get_name_list())
-    sql_card_data = sql.get_specific_data(selected_name)
-    col_1,col_2 = st.columns([4,4])
-    with col_1:
+    selected_name = st.selectbox("SELECT THE NAME TO DELETE/MODIFY",sql.get_name_list())
+
+    if selected_name is not None:
+        sql_card_data = sql.get_specific_data(selected_name)
+        col_1,col_2 = st.columns([4,4])
+        with col_1:
+            
+            sql_modified_name = st.text_input('Name', sql_card_data[0][0])
+            sql_modified_designation = st.text_input('Designation', sql_card_data[0][1])
+            sql_modified_company = st.text_input('Company name', sql_card_data[0][9])
+            sql_modified_district = st.text_input('District', sql_card_data[0][5])
+            sql_modified_mobile = st.text_input('Mobile', sql_card_data[0][4])
+
+        with col_2:
+            sql_modified_mail = st.text_input('Email', sql_card_data[0][2])
+            sql_modified_website = st.text_input('Website', sql_card_data[0][8])
+            sql_modified_address = st.text_input('Address', sql_card_data[0][3])
+            sql_modified_state = st.text_input('State', sql_card_data[0][6])
+            sql_modified_pin = st.text_input('Pincode', sql_card_data[0][7])
+
+        rc1,rc2 = st.columns([4,4])
+        with rc1:
+            modify = st.button('MODIFY')
+        with rc2:
+            delete = st.button('DELETE')
         
-        sql_modified_name = st.text_input('Name', sql_card_data[0][0])
-        sql_modified_designation = st.text_input('Designation', sql_card_data[0][1])
-        sql_modified_company = st.text_input('Company name', sql_card_data[0][9])
-        sql_modified_district = st.text_input('District', sql_card_data[0][5])
-        sql_modified_mobile = st.text_input('Mobile', sql_card_data[0][4])
+        if delete:
+            sql.delete_data(selected_name)
+            st.success('DELETED SUCCESSFULLY', icon="✅")
 
-    with col_2:
-        sql_modified_mail = st.text_input('Email', sql_card_data[0][2])
-        sql_modified_website = st.text_input('Website', sql_card_data[0][8])
-        sql_modified_address = st.text_input('Address', sql_card_data[0][3])
-        sql_modified_state = st.text_input('State', sql_card_data[0][6])
-        sql_modified_pin = st.text_input('Pincode', sql_card_data[0][7])
-
-    rc1,rc2 = st.columns([4,4])
-    with rc1:
-        modify = st.button('MODIFY')
-    with rc2:
-        delete = st.button('DELETE')
-    
-    if delete:
-        sql.delete_data(selected_name)
-        st.success('DELETED SUCCESSFULLY', icon="✅")
-
-    if modify:
-        sql.update_values(selected_name,sql_modified_name,sql_modified_designation,sql_modified_company,sql_modified_district,sql_modified_mobile,sql_modified_mail,sql_modified_website,sql_modified_address,sql_modified_state,sql_modified_pin)
+        if modify:
+            sql.update_values(selected_name,sql_modified_name,sql_modified_designation,sql_modified_company,sql_modified_district,sql_modified_mobile,sql_modified_mail,sql_modified_website,sql_modified_address,sql_modified_state,sql_modified_pin)
+            st.success('MODIFIED SUCCESSFULLY', icon="✅")
 
 if selected == 'ABOUT PROJECT':
     st.write("""
